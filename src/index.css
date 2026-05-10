@@ -1,0 +1,257 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom Fonts */
+@font-face {
+  font-family: 'Title';
+  src: url('/src/assets/fonts/merlin-bold.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Details';
+  src: url('/src/assets/fonts/sfpro-medium.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'NormalText';
+  src: url('/src/assets/fonts/normal-text-bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'NormalText';
+  src: url('/src/assets/fonts/medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'NormalText';
+  src: url('/src/assets/fonts/normal-text-light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'NormalText';
+  src: url('/src/assets/fonts/normal-text-italic-bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'NormalText';
+  src: url('/src/assets/fonts/normal-text-italic-medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'NormalText';
+  src: url('/src/assets/fonts/normal-text-italic-light.otf') format('opentype');
+  font-weight: 300;
+  font-style: italic;
+}
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 10%;
+
+    --primary: 158 64% 52%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 240 5% 96%;
+    --secondary-foreground: 240 10% 10%;
+
+    --muted: 240 5% 96%;
+    --muted-foreground: 240 4% 46%;
+
+    --accent: 158 64% 52%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 240 6% 90%;
+    --input: 240 6% 90%;
+    --ring: 158 64% 52%;
+
+    --radius: 0.75rem;
+
+    /* Custom blog tokens */
+    --content-width: 65ch;
+    --grid-gap: 2rem;
+  }
+
+  .dark {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 98%;
+
+    --card: 240 10% 8%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 10% 8%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 158 64% 52%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 240 4% 16%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 240 4% 16%;
+    --muted-foreground: 240 5% 65%;
+
+    --accent: 158 64% 52%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 240 4% 16%;
+    --input: 240 4% 16%;
+    --ring: 158 64% 52%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+                color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  :root {
+    transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .dark {
+    transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Blur glass effect during theme transition */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(0px);
+    background: rgba(255, 255, 255, 0);
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0;
+    transition: backdrop-filter 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                background 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  body.theme-transitioning::before {
+    backdrop-filter: blur(20px);
+    opacity: 1;
+  }
+
+  /* White overlay when transitioning to light mode */
+  body.transitioning-to-light::before {
+    background: rgba(255, 255, 255, 0.9);
+  }
+
+  /* Black overlay when transitioning to dark mode */
+  body.transitioning-to-dark::before {
+    background: rgba(0, 0, 0, 0.9);
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'NormalText', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 500;
+    font-feature-settings: 'kern' 1, 'liga' 1;
+  }
+
+  p {
+    font-family: 'NormalText', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 500;
+  }
+
+  .dark p {
+    color: #8D8D8D;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Title', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    @apply font-bold tracking-tight;
+  }
+}
+
+@layer utilities {
+  .content-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+  }
+
+  @media (max-width: 768px) {
+    .content-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .article-content h2 {
+    @apply text-2xl font-semibold mt-8 mb-4;
+  }
+
+  .article-content h3 {
+    @apply text-xl font-semibold mt-6 mb-3;
+  }
+
+  .article-content p {
+    @apply mb-4 leading-relaxed;
+  }
+
+  .dark .article-content p {
+    color: #8D8D8D;
+  }
+
+  .article-content ul, .article-content ol {
+    @apply mb-4 pl-6;
+  }
+
+  .article-content li {
+    @apply mb-2;
+  }
+
+  .article-content a {
+    @apply text-primary hover:underline;
+  }
+
+  .article-content blockquote {
+    @apply border-l-4 border-primary/30 pl-4 italic my-4 text-muted-foreground;
+  }
+
+  .article-content code {
+    @apply bg-muted px-1.5 py-0.5 rounded text-sm font-mono;
+  }
+}
